@@ -11,11 +11,15 @@ import SwiftData
 // @Model 宏将这个类标记为 SwiftData 数据模型，自动处理持久化
 @Model
 final class Item {
-    // 存储项目创建的时间戳
     var timestamp: Date
+    var title: String
+    var icon: String
+    var content: String
     
-    // 初始化方法，创建新项目时需要传入时间戳
-    init(timestamp: Date) {
+    init(timestamp: Date, title: String = "", icon: String = "circle.fill", content: String = "") {
         self.timestamp = timestamp
+        self.title = title
+        self.icon = icon
+        self.content = content
     }
 }
