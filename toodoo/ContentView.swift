@@ -14,8 +14,8 @@ struct ContentView: View {
     @Query private var items: [Item]
     @State private var showingAddSheet = false
     @State private var newItemTitle = ""
-    @State private var newItemIcon = "circle.fill"
-    @State private var newItemContent = ""
+    @State private var newItemIcon = "circle.fill" // 新增待办的图标
+    @State private var newItemContent = "" // 新增待办的详细内容
 
     var body: some View {
         // NavigationSplitView 提供主从导航结构（iPad 上会显示分栏）
@@ -26,6 +26,7 @@ struct ContentView: View {
                 ForEach(items) { item in
                     // NavigationLink 点击后导航到详情页面
                     NavigationLink {
+                        // 详情页面，显示图标、标题、内容和时间戳
                         VStack(spacing: 20) {
                             Image(systemName: item.icon)
                                 .font(.system(size: 60))
@@ -40,6 +41,7 @@ struct ContentView: View {
                         }
                         .padding()
                     } label: {
+                        // 列表项显示图标和标题
                         HStack {
                             Image(systemName: item.icon)
                                 .foregroundColor(.blue)
@@ -74,7 +76,9 @@ struct ContentView: View {
         .sheet(isPresented: $showingAddSheet) {
             NavigationView {
                 Form {
+                    // 图标选择区域
                     Section("图标") {
+                        // 使用网格布局显示多个图标选项
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 50))]) {
                             ForEach(["circle.fill", "star.fill", "heart.fill", "flag.fill", "bookmark.fill", "bell.fill", "tag.fill", "paperplane.fill"], id: \.self) { icon in
                                 Image(systemName: icon)
@@ -90,6 +94,7 @@ struct ContentView: View {
                     Section("标题") {
                         TextField("标题", text: $newItemTitle)
                     }
+                    // 内容输入框，支持多行文本
                     Section("内容") {
                         TextField("内容", text: $newItemContent, axis: .vertical)
                             .lineLimit(3...6)
@@ -101,6 +106,7 @@ struct ContentView: View {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("取消") {
                             showingAddSheet = false
+                            // 重置所有输入字段
                             newItemTitle = ""
                             newItemIcon = "circle.fill"
                             newItemContent = ""
@@ -118,10 +124,12 @@ struct ContentView: View {
         }
     }
 
+    // 添加新待办事项，包含标题、图标和内容
     private func addItem() {
         withAnimation {
             let newItem = Item(timestamp: Date(), title: newItemTitle, icon: newItemIcon, content: newItemContent)
             modelContext.insert(newItem)
+            // 重置输入字段
             newItemTitle = ""
             newItemIcon = "circle.fill"
             newItemContent = ""
